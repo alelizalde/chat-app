@@ -75,9 +75,9 @@ References
 
 Dependencies
 --------------
-* Using confluentinc/confluent-kafka-go: (https://github.com/confluentinc/confluent-kafka-go) to implement kafka producer and consumer, these libraries have dependency with librdkafka.
-* Using gocql/gocql: (https://github.com/gocql/gocql) to connect to cassandra cluster.
-* Usinf gorilla/mux: (github.com/gorilla/mux) to handle rest api routing.
+* Using confluentinc/confluent-kafka-go: https://github.com/confluentinc/confluent-kafka-go to implement kafka producer and consumer, these libraries have dependency with librdkafka.
+* Using gocql/gocql: https://github.com/gocql/gocql to connect to cassandra cluster.
+* Usinf gorilla/mux: https://github.com/gorilla/mux to handle rest api routing.
 
 External implementations:
 --------------
