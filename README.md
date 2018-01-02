@@ -49,7 +49,7 @@ There are two main programs:
     http://server:8080/send/{chat room}/{user id} - And message needs to be in the body of the request
     i.e. http://192.168.0.16:8080/send/torbit-room-1/alfonso
     ```   
-       
+    To receive messages using the rest service:  
     ```text
     http://server:8080/receive/{chat room}/{user id}
     http://192.168.0.16:8080/receive/torbit-room-1/wen  
