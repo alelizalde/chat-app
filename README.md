@@ -120,7 +120,7 @@ Pending activities / known issues
 
 Other interesting implementations
 ---------------
-* it would be interesting to start doing analytics on the collected data, I started researching on different approaches (https://movio.co/en/blog/migrate-Scala-to-Go/) for using Go with analytics like:
+* it would be interesting to start doing analytics on the collected data, I started researching on different approaches for using Go with analytics like:
    * Most active users
    * Most active chat rooms
    * Most utilized words
