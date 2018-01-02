@@ -52,7 +52,7 @@ There are two main programs:
     To receive messages using the rest service:  
     ```text
     http://server:8080/receive/{chat room}/{user id}
-    http://192.168.0.16:8080/receive/torbit-room-1/wen  
+    i.e. http://192.168.0.16:8080/receive/torbit-room-1/wen  
     ```
 2. TelnetServer.go to start telnet server - It needs to receive the configuration file path and name  and chat room name as parameters.  
     ```Shell
