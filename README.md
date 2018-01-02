@@ -117,3 +117,13 @@ Pending activities / known issues
     * We might want to capture and handle curse words (optional)
     * Need to have implementation for chat rooms administration, right now any user registered on the database can join any chat room as there is no concept of private rooms implemented.
 * Kafka messages are set to be purged every 24 hours, this is a kafka configuration and can be changed.
+
+Other interesting implementations
+---------------
+* it would be interesting to start doing analytics on the collected data, I started researching on different approaches (https://movio.co/en/blog/migrate-Scala-to-Go/) for using Go with analytics like:
+   * Most active users
+   * Most active chat rooms
+   * Most utilized words
+   * Most active days and times
+   * Chat user retention and abandon
+   * Average response times
