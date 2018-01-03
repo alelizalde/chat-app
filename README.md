@@ -69,6 +69,11 @@ There are two main programs:
     ```Shell
     go run main/MessageAnalyzer.go ./torbitchat.conf torbit-room-1
     ```
+    Query the database to monitor popularity:
+    ```sql
+    cqlsh:torbitchat> select * from torbitchat.popular_count;
+    ```
+
 
 References
 --------------
