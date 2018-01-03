@@ -65,7 +65,7 @@ There are two main programs:
     telnet host port
     i.e. telnet localhost 5000
     ```
-3. MessageAnalyzer.go, implemented to increase the count of a word when is found in an message, this implementation is decoupled from the dest of the chat operation as I didn't want to slow down the chat message consumer and producer, also the chat is always listening for new messages and the rest API listener only search for new messages by request. It needs to receive the configuration file path and name  and chat room name as parameters. 
+3. MessageAnalyzer.go, implemented to increase the count of a word when is found in a message, this implementation is decoupled from the dest of the chat operation as I didn't want to slow down the chat message consumer and producer, also the chat is always listening for new messages and the rest API listener only search for new messages by request. It needs to receive the configuration file path and name  and chat room name as parameters. 
     ```Shell
     go run main/MessageAnalyzer.go ./torbitchat.conf torbit-room-1
     ```
