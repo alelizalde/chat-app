@@ -131,7 +131,7 @@ Pending activities / known issues
 * Kafka messages are set to be purged every 24 hours, this is a kafka configuration and can be changed.
 * Messages can also be compressed to utilize less space on the network and storage.
 
-Additional implementation
+Additional implementations
 -----------------
-* We can capture and handle some words coming from the messages for different purposes - I implemented this feature to count popularity.
+* We can capture and handle some words coming from the messages for different purposes - I implemented this feature to count word popularity.
 * The chat is limited to 1000 bytes message size to prevent big messages getting pushed.
