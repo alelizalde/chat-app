@@ -133,3 +133,4 @@ Pending activities / known issues
 Additional implementation
 -----------------
 * We can capture and handle some words coming from the messages for different purposes - I implemented this feature to count popularity.
+* The chat is limited to 1000 bytes message size to prevent big messages getting pushed.
