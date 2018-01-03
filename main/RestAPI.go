@@ -100,8 +100,8 @@ func SendMessage(w http.ResponseWriter, r *http.Request){
 	//if user id and chat room are not empty we can send the message
 	if vars["userid"]!= "" && vars["room-name"] != "" {
 
-		//limiting the message to 1048576 bytes
-		body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+		//limiting the message to 1000 bytes
+		body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1000))
 
 		if err != nil {
 			panic(err)

@@ -28,10 +28,26 @@ var KafkaTopic string
 
 //Executing run for ChatMessage
 func (job chatMessage) run() string {
+	message:=strings.TrimSuffix(job.param,"\r")
+	var strLen int
+	if len(message)>1000{
+		strLen=1000
+	}else{
+		strLen=len(message)
+	}
+	var messagebyt [1000]byte
+
+	for k, v := range []byte(message) {
+		if k==1000 {break}
+		messagebyt[k] = byte(v)
+	}
+	
+	utilities.Info(string(messagebyt[:strLen]))
+	utilities.Debug("Received message on telnet: "+string(message[:]))
 	//Sending message to kafka
-	utilities.KafkaProducer(time.Now().Format("2006.01.02 15:04:05"),"telnet", "broadcast message "+ strings.TrimSuffix(job.param,"\r"),KafkaTopic)
+	utilities.KafkaProducer(time.Now().Format("2006.01.02 15:04:05"),"telnet", "broadcast message "+ string(messagebyt[:strLen]),KafkaTopic)
 	//Saving message into log file
-	utilities.Savelog(time.Now().Format("2006.01.02 15:04:05") + " - telnet broadcast to "+KafkaTopic+" room from "+RemoteIP+": "+ job.param)
+	utilities.Savelog(time.Now().Format("2006.01.02 15:04:05") + " - telnet broadcast to "+KafkaTopic+" room from "+RemoteIP+": "+ string(messagebyt[:strLen]))
 	return "Message sent to chat room " + KafkaTopic + ": "+ job.param
 }
 
@@ -109,7 +125,7 @@ func main() {
 	persistence.KafkaHost=cfg.String("kafka-host")
 	KafkaTopic=os.Args[2]
 	if KafkaTopic==""{
-		utilities.Error("Group name cannot be empty")
+		utilities.Error("Chat room name cannot be empty")
 		os.Exit(1)
 	}
 

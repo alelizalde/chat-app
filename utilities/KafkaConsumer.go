@@ -27,7 +27,6 @@ import (
 	"os"
 	"torbit/persistence"
 	"time"
-	"encoding/json"
 )
 
 //Keeping new list of messages here
@@ -77,7 +76,7 @@ func  KafkaConsumerActiveListener(group string,kafkaTopic string) {
 		case *kafka.Message:
 			//If messages are not coming from a user to ignore then we will add it to the list,
 			//otherwise will be ignored.
-			timestamp,sender,message:=readJson(string(e.Value))
+			timestamp,sender,message:=ReadJson(string(e.Value))
 			if IgnoreMessageFromContacts(sender,group) == false {
 				CurrentMessages += timestamp +" - "+sender+": "+message + "\n"
 				Debug("message: "+CurrentMessages)
@@ -102,21 +101,6 @@ func  KafkaConsumerActiveListener(group string,kafkaTopic string) {
 			debugTime = time.Now()
 		}
 	}
-}
-
-//Read incoming json message
-func readJson(message string) (string,string,string) {
-
-	byt := []byte(message)
-	var dat map[string]interface{}
-
-	if err := json.Unmarshal(byt, &dat); err != nil {
-		return time.Now().Format("2006.01.02 15:04:05"),"error","error reading message"
-	}
-
-	Debug(dat)
-
-	return dat["timestamp"].(string),dat["sender"].(string),dat["message"].(string)
 }
 
 //Check for new messages saved into CurrentMessages and clean it up

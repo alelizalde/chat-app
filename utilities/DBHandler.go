@@ -3,6 +3,7 @@ package utilities
 import (
 	"github.com/gocql/gocql"
 	"torbit/persistence"
+	"log"
 )
 
 //Creating cassandra session
@@ -50,4 +51,38 @@ func IgnoreMessageFromContacts(contact_id string, user_id string) (bool){
 	//we found the current message should be ignored
 	return true
 
+}
+
+func LoadWordsForAnalysis()(bool){
+
+	session:=CreateSession()
+	defer session.Close()
+
+	var word string
+
+	iter := session.Query("SELECT word FROM torbitchat.words_analytics LIMIT 100").Consistency(gocql.One).Iter()
+
+
+	for iter.Scan(&word) {
+		persistence.WordsToaAnalyze = append(persistence.WordsToaAnalyze,word)
+	}
+	Debug(persistence.WordsToaAnalyze)
+
+	if err := iter.Close(); err != nil {
+		return false
+	}
+
+	//we all the listed words
+	return true
+}
+
+func IncrementCount(word string){
+
+	session:=CreateSession()
+	defer session.Close()
+
+	if err := session.Query(`	UPDATE torbitchat.popular_count SET popularity = popularity + 1 WHERE word = ?`,
+		word).Exec(); err != nil {
+		log.Fatal(err)
+	}
 }
