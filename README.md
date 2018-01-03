@@ -17,7 +17,7 @@ Project name: torbit
     * utilities - all common utilities
 
     ```text
-    .torbit  
+    .torbit-chat    
     ├── README.md  
     ├── main  
     │   ├── MessageAnalyzer.go
