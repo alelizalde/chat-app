@@ -12,3 +12,5 @@ var KafkaSessionTimeout string
 var KafkaAutoOffsetReset string
 //Cassandra host
 var CassandraHost string
+//List of Words to analyze
+var WordsToaAnalyze []string
