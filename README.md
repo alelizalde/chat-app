@@ -115,7 +115,7 @@ External implementations:
     word text PRIMARY KEY
     );
     
-    CREATE TABLE popular_count (
+    CREATE TABLE torbitchat.popular_count (
     word text PRIMARY KEY,
     popularity counter
     );
