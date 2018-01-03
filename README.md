@@ -20,7 +20,8 @@ Project name: torbit
     .torbit  
     ├── README.md  
     ├── main  
-    │   ├── RestAPI.go  
+    │   ├── MessageAnalyzer.go
+    │   ├── RestAPI.go  
     │   └── TelnetServer.go  
     ├── persistence  
     │   └── GlobalPersistance.go  
@@ -64,7 +65,7 @@ There are two main programs:
     telnet host port
     i.e. telnet localhost 5000
     ```
-
+3. MessageAnalyzer.go, implemented to increase the count of a word when is found in an message, this implementation is decoupled from the dest of the chat operation as I didn't want to slow down the chat message consumer and producer, also the chat is always listening for new messages and the rest API listener only search for new messages by request.
 
 
 References
@@ -102,6 +103,15 @@ External implementations:
         user_id text,
         PRIMARY KEY (contact_id, user_id)
     );
+    
+    CREATE TABLE torbitchat.words_analytics (
+    word text PRIMARY KEY
+    );
+    
+    CREATE TABLE popular_count (
+    word text PRIMARY KEY,
+    popularity counter
+    );
     ```
 
 Pending activities / known issues
@@ -110,6 +120,9 @@ Pending activities / known issues
 * Security needs to be implemented into the chat room:
     * User and password
     * TLS over http and telnet
-    * We might want to capture and handle some words like curse words - I implemented this feature
     * Need to have implementation for chat rooms administration, right now any user registered on the database can join any chat room as there is no concept of private rooms implemented.
 * Kafka messages are set to be purged every 24 hours, this is a kafka configuration and can be changed.
+
+Additional implementation
+-----------------
+* We can capture and handle some words for different purposes - I implemented this feature for counting popularity.
