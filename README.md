@@ -5,7 +5,7 @@ Programming challenge for Torbit/Walmartlabs to Alfonso Elizalde
 
 Details
 --------------
-I decided to use kafka to store and handle messages on the chat using kafka topics as chat rooms and topic consumer groups as user ids logged into a chat room, this is giving me the ability to send the messages to all users subscribed/listening to a chat room. I also implemented a cassandra cluster to store metadata including valid/registered users, ignored contacts and a kafka offset tracker to registry who send what messages and ignore them when a user does not what to receive messages from a specific contact. 
+I decided to use kafka to store and handle messages on the chat using kafka topics as chat rooms and topic consumer groups as user ids logged into a chat room, this is giving me the ability to send the messages to all users subscribed/listening to a chat room. I also implemented a cassandra cluster to store metadata including valid/registered users, ignored contacts when a user does not want to receive messages from a specific sender. 
 
 Project anatomy
 --------------
@@ -73,11 +73,13 @@ References
 
 * I used (https://astaxie.gitbooks.io/build-web-application-with-golang/en/13.4.html) as example to handle configuration and logging.
 
+* Used different websites to create the rest service.
+
 Dependencies
 --------------
-* Using confluentinc/confluent-kafka-go: https://github.com/confluentinc/confluent-kafka-go to implement kafka producer and consumer, these libraries have dependency with librdkafka.
+* Using confluentinc/confluent-kafka-go: https://github.com/confluentinc/confluent-kafka-go to implement kafka producer and consumer, these libraries have dependency with librdkafka, if you have a mac you can follow https://github.com/confluentinc/confluent-kafka-python/issues/6 to install librdkafka.
 * Using gocql/gocql: https://github.com/gocql/gocql to connect to cassandra cluster.
-* Usinf gorilla/mux: github.com/gorilla/mux to handle rest api routing.
+* Usinf gorilla/mux: https://github.com/gorilla/mux to handle rest api routing.
 
 External implementations:
 --------------
@@ -95,11 +97,6 @@ External implementations:
         name text
     );
     
-    CREATE TABLE torbitchat.offset_tracker (
-        offset int PRIMARY KEY,
-        contact_id text
-    );
-    
     CREATE TABLE torbitchat.ignore_contacts (
         contact_id text,
         user_id text,
@@ -110,10 +107,9 @@ External implementations:
 Pending activities / known issues
 -----------------
 * Log file needs to be purged periodically, currently there is only one file growing with all the messages.
-* Kafka listener could be faster than the insert into cassandra offset track used to check if there are messages from users to ignore, if this happen it is assumed the message is not ignored. I need to implement a retry method when offset doesn't exist yet in cassandra offset_tracker table and kafka consumer alrealy has the new message.
 * Security needs to be implemented into the chat room:
     * User and password
     * TLS over http and telnet
-    * We might want to capture and handle curse words (optional)
+    * We might want to capture and handle some words like curse words - I implemented this feature
     * Need to have implementation for chat rooms administration, right now any user registered on the database can join any chat room as there is no concept of private rooms implemented.
 * Kafka messages are set to be purged every 24 hours, this is a kafka configuration and can be changed.
