@@ -132,4 +132,4 @@ Pending activities / known issues
 
 Additional implementation
 -----------------
-* We can capture and handle some words for different purposes - I implemented this feature for counting popularity.
+* We can capture and handle some words coming from the messages for different purposes - I implemented this feature to count popularity.
