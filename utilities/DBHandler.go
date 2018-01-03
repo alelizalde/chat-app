@@ -3,15 +3,15 @@ package utilities
 import (
 	"github.com/gocql/gocql"
 	"torbit/persistence"
-	"log"
-	"fmt"
 )
 
 //Creating cassandra session
 func CreateSession() (*gocql.Session) {
+	Debug("Connecting to cassandra")
 	cluster := gocql.NewCluster(persistence.CassandraHost)
 	cluster.Keyspace = "torbitchat"
 	session, _ := cluster.CreateSession()
+	Debug("Cassandra session created")
 	return session
 }
 
@@ -33,20 +33,10 @@ func ValidateUserId(rec_user_id string) (bool){
 }
 
 //Searching for a message to ignore coming from an specific user into current user
-func IgnoreMessageFromContacts(offset string, user_id string) (bool){
+func IgnoreMessageFromContacts(contact_id string, user_id string) (bool){
 
-	Debug("offset: "+offset)
 	session:=CreateSession()
 	defer session.Close()
-
-	var contact_id string
-
-	if err := session.Query("SELECT contact_id FROM torbitchat.offset_tracker " +
-		"WHERE offset = ?",offset).Consistency(gocql.One).Scan(&contact_id); err != nil {
-		//if the offset still doesn't exist either consumer was faster than the database insert
-		//or an error happened while insering on offset tracker, we handle this as proceed sending the message
-		return false
-	}
 
 	Debug("contact_id: "+contact_id)
 	Debug("user_id: "+user_id)
@@ -57,20 +47,7 @@ func IgnoreMessageFromContacts(offset string, user_id string) (bool){
 		return false
 	}
 
-	//we found the current message should be ignored and return true
+	//we found the current message should be ignored
 	return true
 
-}
-
-//Inserting offset number and user sending message into an offset tracker
-func InsertOffset(offset int,contact_id string){
-	session:=CreateSession()
-	defer session.Close()
-
-	fmt.Printf("offset %d contact id %s ",offset,contact_id)
-
-	if err := session.Query(`INSERT INTO offset_tracker (offset,contact_id) VALUES (?, ?)`,
-		offset, contact_id).Exec(); err != nil {
-		log.Fatal(err)
-	}
 }

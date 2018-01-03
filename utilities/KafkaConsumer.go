@@ -27,9 +27,10 @@ import (
 	"os"
 	"torbit/persistence"
 	"time"
+	"encoding/json"
 )
 
-//Keeping new messages here
+//Keeping new list of messages here
 var CurrentMessages string
 
 //Kafka consumer listener
@@ -44,7 +45,7 @@ func  KafkaConsumerActiveListener(group string,kafkaTopic string) {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers":    broker,
 		"group.id":             group,
-		"spersistence":   persistence.KafkaSessionTimeout,
+		"session.timeout.ms":   persistence.KafkaSessionTimeout,
 		"default.topic.config": kafka.ConfigMap{"auto.offset.reset": persistence.KafkaAutoOffsetReset}})
 
 	defer func() {
@@ -76,8 +77,9 @@ func  KafkaConsumerActiveListener(group string,kafkaTopic string) {
 		case *kafka.Message:
 			//If messages are not coming from a user to ignore then we will add it to the list,
 			//otherwise will be ignored.
-			if IgnoreMessageFromContacts(e.TopicPartition.Offset.String(),group) == false {
-				CurrentMessages += string(e.Value) + "\n"
+			timestamp,sender,message:=readJson(string(e.Value))
+			if IgnoreMessageFromContacts(sender,group) == false {
+				CurrentMessages += timestamp +" - "+sender+": "+message + "\n"
 				Debug("message: "+CurrentMessages)
 			}else{
 				Info(group + " ignored message: "+string(e.Value) )
@@ -100,6 +102,21 @@ func  KafkaConsumerActiveListener(group string,kafkaTopic string) {
 			debugTime = time.Now()
 		}
 	}
+}
+
+//Read incoming json message
+func readJson(message string) (string,string,string) {
+
+	byt := []byte(message)
+	var dat map[string]interface{}
+
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		return time.Now().Format("2006.01.02 15:04:05"),"error","error reading message"
+	}
+
+	Debug(dat)
+
+	return dat["timestamp"].(string),dat["sender"].(string),dat["message"].(string)
 }
 
 //Check for new messages saved into CurrentMessages and clean it up

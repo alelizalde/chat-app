@@ -28,12 +28,10 @@ var KafkaTopic string
 
 //Executing run for ChatMessage
 func (job chatMessage) run() string {
-	messageToSend:=time.Now().Format("2006.01.02 15:04:05") + " - telnet broadcast from "+RemoteIP+": "+ job.param
 	//Sending message to kafka
-	utilities.KafkaProducer(messageToSend,"telnet",KafkaTopic)
-	messageToSend=time.Now().Format("2006.01.02 15:04:05") + " - telnet broadcast to "+KafkaTopic+" room from "+RemoteIP+": "+ job.param
+	utilities.KafkaProducer(time.Now().Format("2006.01.02 15:04:05"),"telnet", "broadcast message "+ strings.TrimSuffix(job.param,"\r"),KafkaTopic)
 	//Saving message into log file
-	utilities.Savelog(messageToSend)
+	utilities.Savelog(time.Now().Format("2006.01.02 15:04:05") + " - telnet broadcast to "+KafkaTopic+" room from "+RemoteIP+": "+ job.param)
 	return "Message sent to chat room " + KafkaTopic + ": "+ job.param
 }
 

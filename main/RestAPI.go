@@ -111,7 +111,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request){
 		}
 
 		//Sending message to kafka
-		utilities.KafkaProducer(time.Now().Format("2006.01.02 15:04:05") + " - " + vars["userid"]+ ": " + string(body),vars["userid"],vars["room-name"])
+		utilities.KafkaProducer(time.Now().Format("2006.01.02 15:04:05"), vars["userid"], string(body),vars["room-name"])
 		//Saving message to log file
 		utilities.Savelog(time.Now().Format("2006.01.02 15:04:05") + " - " + vars["userid"] + " sent to " + vars["room-name"] + " room from " + r.RemoteAddr + " :" + string(body))
 	}

@@ -4,6 +4,7 @@ import (
 	"os"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"torbit/persistence"
+	"encoding/json"
 )
 
 /**
@@ -27,7 +28,7 @@ import (
 
 
  //Kafka producer
-func KafkaProducer(message string,user_id string,kafkaTopic string) {
+func KafkaProducer(timestamp string,user_id string,message string,kafkaTopic string) {
 
 	broker := persistence.KafkaHost
 	topic := kafkaTopic
@@ -46,7 +47,7 @@ func KafkaProducer(message string,user_id string,kafkaTopic string) {
 	// .Events channel is used.
 	deliveryChan := make(chan kafka.Event)
 
-	value := message
+	value := createJson(timestamp ,user_id ,message )
 
 	//Sending message
 	err = p.Produce(&kafka.Message{TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny}, Value: []byte(value)}, deliveryChan)
@@ -58,9 +59,25 @@ func KafkaProducer(message string,user_id string,kafkaTopic string) {
 		Error(m.TopicPartition.Error)
 	} else {
 		Info("Delivered message to topic "+string(*m.TopicPartition.Topic)+" at offset "+m.TopicPartition.Offset.String()+"\n")
-		//Inserting new message into the database
-		InsertOffset(int(m.TopicPartition.Offset),user_id)
 	}
 
 	close(deliveryChan)
+}
+
+//Create json before sending it to message manager
+func createJson(timestamp string,sender string,message string) (string) {
+
+	Debug("timestamp: "+timestamp)
+	Debug("sender: "+sender)
+	Debug("message: "+message)
+	sMessage:= map[string]string{"timestamp": timestamp, "sender": sender,"message":message}
+	json, err := json.Marshal(sMessage)
+
+	if err!= nil{
+		Error("Error converting message into json")
+	}
+
+	Debug("createJson: "+string(json))
+
+	return string(json)
 }

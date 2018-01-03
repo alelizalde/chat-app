@@ -1,6 +1,6 @@
 package utilities
 
-//Error handler function
+//Error handler
 type Block struct {
 	Try     func()
 	Catch   func(Exception)
