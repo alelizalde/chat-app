@@ -129,6 +129,7 @@ Pending activities / known issues
     * TLS over http and telnet
     * Need to have implementation for chat rooms administration, right now any user registered on the database can join any chat room as there is no concept of private rooms implemented.
 * Kafka messages are set to be purged every 24 hours, this is a kafka configuration and can be changed.
+* Messages can also be compressed to utilize less space on the network and storage.
 
 Additional implementation
 -----------------
