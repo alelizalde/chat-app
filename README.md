@@ -49,10 +49,10 @@ There are two main programs:
     http://server:8080/send/{chat room}/{user id} - And message needs to be in the body of the request
     i.e. http://192.168.0.16:8080/send/torbit-room-1/alfonso
     ```   
-    To receive messages using the rest service:  
+       
     ```text
     http://server:8080/receive/{chat room}/{user id}
-    i.e. http://192.168.0.16:8080/receive/torbit-room-1/wen  
+    http://192.168.0.16:8080/receive/torbit-room-1/wen  
     ```
 2. TelnetServer.go to start telnet server - It needs to receive the configuration file path and name  and chat room name as parameters.  
     ```Shell
@@ -75,9 +75,9 @@ References
 
 Dependencies
 --------------
-* Using confluentinc/confluent-kafka-go: https://github.com/confluentinc/confluent-kafka-go to implement kafka producer and consumer, these libraries have dependency with librdkafka (on mac you can follow https://github.com/confluentinc/confluent-kafka-python/issues/6).
+* Using confluentinc/confluent-kafka-go: https://github.com/confluentinc/confluent-kafka-go to implement kafka producer and consumer, these libraries have dependency with librdkafka.
 * Using gocql/gocql: https://github.com/gocql/gocql to connect to cassandra cluster.
-* Usinf gorilla/mux: https://github.com/gorilla/mux to handle rest api routing.
+* Usinf gorilla/mux: github.com/gorilla/mux to handle rest api routing.
 
 External implementations:
 --------------
@@ -117,13 +117,3 @@ Pending activities / known issues
     * We might want to capture and handle curse words (optional)
     * Need to have implementation for chat rooms administration, right now any user registered on the database can join any chat room as there is no concept of private rooms implemented.
 * Kafka messages are set to be purged every 24 hours, this is a kafka configuration and can be changed.
-
-Other interesting implementations
----------------
-* it would be interesting to start doing analytics on the collected data, I started researching on different approaches for using Go with analytics like:
-   * Most active users
-   * Most active chat rooms
-   * Most utilized words
-   * Most active days and times
-   * Chat user retention and abandon
-   * Average response times
