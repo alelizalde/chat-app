@@ -81,7 +81,7 @@ References
 
 * I used (https://astaxie.gitbooks.io/build-web-application-with-golang/en/13.4.html) as example to handle configuration and logging.
 
-* Used different websites to create the rest service.
+* Used different websites as references to create the rest service.
 
 Dependencies
 --------------
