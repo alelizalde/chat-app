@@ -1,7 +1,5 @@
-Torbit chat
+Chat Application
 ==============
-Programming challenge for Torbit/Walmartlabs to Alfonso Elizalde
---------------
 
 Details
 --------------
